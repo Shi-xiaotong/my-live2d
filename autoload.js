@@ -5,42 +5,44 @@ const live2d_path = "https://live2d.233002.xyz/";
 
 // 封装异步加载资源的方法
 function loadExternalResource(url, type) {
-	return new Promise((resolve, reject) => {
-		let tag;
+    return new Promise((resolve, reject) => {
+        let tag;
 
-		if (type === "css") {
-			tag = document.createElement("link");
-			tag.rel = "stylesheet";
-			tag.href = url;
-		}
-		else if (type === "js") {
-			tag = document.createElement("script");
-			tag.src = url;
-		}
-		if (tag) {
-			tag.onload = () => resolve(url);
-			tag.onerror = () => reject(url);
-			document.head.appendChild(tag);
-		}
-	});
+        if (type === "css") {
+            tag = document.createElement("link");
+            tag.rel = "stylesheet";
+            tag.href = url;
+        } else if (type === "js") {
+            tag = document.createElement("script");
+            tag.src = url;
+        }
+        if (tag) {
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(url);
+            document.head.appendChild(tag);
+        }
+    });
 }
 
 // 加载 waifu.css live2d.min.js waifu-tips.js
 if (screen.width >= 768) {
-	Promise.all([
-		loadExternalResource(live2d_path + "waifu.css", "css"),
-		loadExternalResource(live2d_path + "live2d.min.js", "js"),
-		loadExternalResource(live2d_path + "waifu-tips.js", "js")
-	]).then(() => {
-		// 配置选项的具体用法见 README.md
-		initWidget({
-			isLocalModel: true, // 使用本地模型
-			waifuPath: live2d_path + "waifu-tips.json",
-			modelsPath: live2d_path + "model",
-			modelListPath: live2d_path + "model/model_list.json",
-			tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
-		});
-	});
+    Promise.all([
+        loadExternalResource(live2d_path + "waifu.css", "css"),
+        loadExternalResource(live2d_path + "live2d.min.js", "js"),
+        loadExternalResource(live2d_path + "waifu-tips.js", "js")
+    ]).then(() => {
+        // 配置选项的具体用法见 README.md
+        initWidget({
+            isLocalModel: true, // 使用本地模型
+            waifuPath: live2d_path + "waifu-tips.json",
+            modelsPath: live2d_path + "model",
+            modelListPath: live2d_path + "model/model_list.json",
+            modelId: 0, // 指定模型 id，根据 model_list.json 中的顺序设置
+            drag: true, // 启用拖拽功能
+            tools: [] // 禁用所有功能按钮
+            // tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
+        });
+    });
 }
 
 console.log(`
