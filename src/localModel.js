@@ -44,17 +44,24 @@ class LocalModel {
     }
 
     async loadModel(modelId, modelTexturesId, message) {
+        // 确保模型列表已加载
+        if (!this.modelList) {
+            await this.loadModelList();
+        }
+
+        // 校验 modelId 是否在有效范围内
+        const modelIdNum = parseInt(modelId);
+        if (isNaN(modelIdNum) || modelIdNum < 0 || modelIdNum >= this.modelList.models.length) {
+            console.warn(`Invalid modelId ${modelId}, resetting to 0`);
+            modelId = 0;
+        }
+
         // 保存当前模型状态
         localStorage.setItem("modelId", modelId);
         localStorage.setItem("modelTexturesId", modelTexturesId);
 
         // 显示消息
         showMessage(message, 4000, 10);
-
-        // 确保模型列表已加载
-        if (!this.modelList) {
-            await this.loadModelList();
-        }
 
         // 获取目标模型，可能是值，也可能是数组
         const target = randomSelection(this.modelList.models[modelId]);
