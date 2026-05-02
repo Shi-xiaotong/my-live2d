@@ -37,6 +37,7 @@ if (screen.width >= 768) {
             waifuPath: live2d_path + "waifu-tips.json",
             modelsPath: live2d_path + "model",
             modelListPath: live2d_path + "model/model_list.json",
+            modelId: 0, // 指定模型 id，根据 model_list.json 中的顺序设置
             drag: true, // 启用拖拽功能
             tools: [] // 禁用所有功能按钮
             // tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
